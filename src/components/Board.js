@@ -82,7 +82,7 @@ function Board() {
     }, [sign, roundWon, gameActive, gameDraw]);
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 mt-5 pt-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 mt-5 pt-5 mx-2">
             <div></div>
             <div className="">
                 <div className="grid grid-cols-3 gap-2">
