@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Message from "./Message";
 import Sign from "./Sign";
 
 function Board() {
@@ -7,6 +8,7 @@ function Board() {
     let [sign, setSign] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0]);
     let [roundWon, setRoundWon] = useState(false);
     let [gameActive, setGameActive] = useState(true);
+    let [gameDraw, setGameDraw] = useState(false);
 
     const updateSign = (index) => {
         if (sign[index] === 0 && gameActive) {
@@ -64,10 +66,20 @@ function Board() {
             }
         };
 
+        const checkRoundDraw = () => {
+            let roundDraw = !sign.includes(0);
+            if (roundDraw) {
+                setGameDraw(true);
+                setGameActive(false);
+            }
+            return;
+        };
+
         setRoundWon(false);
         checkGameEnded();
         makeGameEnd();
-    }, [sign, roundWon, gameActive]);
+        checkRoundDraw();
+    }, [sign, roundWon, gameActive, gameDraw]);
 
     return (
         <div className="grid grid-cols-3 mt-5 pt-5">
@@ -87,34 +99,12 @@ function Board() {
                     })}
                 </div>
                 <div className="my-2 py-2 text-center text-3xl">
-                    {roundWon ? (
-                        <div className="my-2">
-                            <p className="text-red-500 py-2">Game Over</p>
-                            <p className="text-indigo-500 py-2">
-                                {value === 1 ? (
-                                    <i className="fas fa-yin-yang"></i>
-                                ) : (
-                                    <i className="fas fa-times"></i>
-                                )}{" "}
-                                <span className="mx-2">Won</span>
-                            </p>
-                            <div
-                                className="my-2 py-2 px-4 rounded bg-yellow-400 text-white cursor-pointer"
-                                onClick={restartGame}
-                            >
-                                Restart
-                            </div>
-                        </div>
-                    ) : (
-                        <p>
-                            {value === 10 ? (
-                                <i className="fas fa-yin-yang text-red-400"></i>
-                            ) : (
-                                <i className="fas fa-times text-green-400"></i>
-                            )}
-                            's <span className="mx-2">Turn</span>
-                        </p>
-                    )}
+                    <Message
+                        gameActive={gameActive}
+                        restartGame={restartGame}
+                        gameDraw={gameDraw}
+                        value={value}
+                    />
                 </div>
             </div>
             <div></div>
